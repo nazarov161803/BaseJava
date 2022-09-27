@@ -3,49 +3,28 @@
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
-    private int size = 0;
 
     void clear() {
-        for (int i = 0; i <= size; i++) {
-            storage[i] = null;
-        }
-        size = 0;
     }
 
-    void save(Resume resume) {
-        storage[size] = resume;
-        size++;
+    void save(Resume r) {
     }
 
     Resume get(String uuid) {
-        for (int i =0; i<size; i++) {
-            if (storage[i].uuid.equalsIgnoreCase(uuid)) {
-                return storage[i];
-            }
-        }
         return null;
     }
 
     void delete(String uuid) {
-        for (int i = 0; i <= size; i++) {
-            if (storage[i].uuid.equalsIgnoreCase(uuid)) {
-                storage[i] = null;
-                size--;
-            }
-            storage[i] = storage[i + 1];
-        }
     }
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        Resume[] result = new Resume[size];
-        System.arraycopy(storage, 0, result, 0, size);
-        return result;
+        return new Resume[0];
     }
 
     int size() {
-        return size;
+        return 0;
     }
 }
