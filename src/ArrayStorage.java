@@ -13,8 +13,12 @@ public class ArrayStorage {
     }
 
     void save(Resume resume) {
-        storage[size] = resume;
-        size++;
+        if (get(resume.uuid) == null) {
+            storage[size] = resume;
+            size++;
+        } else {
+            System.out.printf("Resume with uuid %s already exist.", resume.uuid);
+        }
     }
 
     Resume get(String uuid) {
@@ -33,6 +37,14 @@ public class ArrayStorage {
                 size--;
                 if (size - i >= 0) System.arraycopy(storage, i + 1, storage, i, size - i);
                 storage[size] = null;
+            }
+        }
+    }
+
+    void update(Resume resume) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].uuid.equalsIgnoreCase(resume.uuid)) {
+                storage[i] = resume;
             }
         }
     }
