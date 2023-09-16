@@ -1,5 +1,8 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.exception.ExistStorageException;
+import com.urise.webapp.exception.NotExistStorageException;
+import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
 import java.text.MessageFormat;
@@ -21,9 +24,9 @@ public abstract class AbstractArrayStorage implements Storage {
     public void save(Resume resume) {
         int index = getIndex(resume.getUuid());
         if (index > 0) {
-            System.out.println(MessageFormat.format("Resume with uuid - {0} already exist", resume.getUuid()));
+            throw new ExistStorageException(MessageFormat.format("Resume with uuid - {0} already exist", resume.getUuid()));
         } else if (size == storage.length) {
-            System.out.println("Storage overflow");
+            throw new StorageException("Stack Over flow", resume.getUuid());
         } else {
             insertElement(resume, index);
             size++;
@@ -36,7 +39,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public void update(Resume resume) {
         int index = getIndex(resume.getUuid());
         if (index == -1) {
-            System.out.println(MessageFormat.format("Resume with uuid - {0} doesn't exist", resume.getUuid()));
+            throw new NotExistStorageException(MessageFormat.format("Resume with uuid - {0} doesn't exist", resume.getUuid()));
         } else {
             storage[index] = resume;
         }
@@ -46,8 +49,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public Resume get(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
-            System.out.println(MessageFormat.format("Resume with uuid - {0} doesn't exist", uuid));
-            return null;
+            throw new NotExistStorageException(MessageFormat.format("Resume with uuid - {0} doesn't exist", uuid));
         } else {
             return storage[index];
         }
@@ -65,7 +67,7 @@ public abstract class AbstractArrayStorage implements Storage {
                 }
             }
         } else {
-            System.out.println(MessageFormat.format("Resume with uuid - {0} doesn't exist", uuid));
+            throw new NotExistStorageException(MessageFormat.format("Resume with uuid - {0} doesn't exist", uuid));
         }
     }
 
@@ -79,11 +81,13 @@ public abstract class AbstractArrayStorage implements Storage {
         return allResumes;
     }
 
-    public int size() {
+    @Override
+    public int getSize() {
         return size;
     }
 
-    protected abstract int getIndex(String uuid);
+
+    public abstract int getIndex(String uuid);
 
     protected abstract void fillDeletedElement(int index);
 

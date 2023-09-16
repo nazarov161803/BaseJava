@@ -1,24 +1,27 @@
 package com.urise.webapp.model;
 
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Initial resume class
  */
-public class Resume implements Comparable<Resume>{
+public class Resume implements Comparable<Resume> {
 
     // Unique identifier
-    private String uuid;
+    private final String uuid;
+
+    public Resume() {
+        this(UUID.randomUUID().toString()); //TODO вызовется конструктор с параметра с генереным юуидом
+    }
+
+    public Resume(String uuid) {
+        this.uuid = uuid;
+    }
 
     public String getUuid() {
         return uuid;
     }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-
 
     @Override
     public boolean equals(Object o) {
