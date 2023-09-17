@@ -23,7 +23,7 @@ public abstract class AbstractArrayStorage implements Storage {
     @Override
     public void save(Resume resume) {
         int index = getIndex(resume.getUuid());
-        if (index > 0) {
+        if (index >= 0) {
             throw new ExistStorageException(MessageFormat.format("Resume with uuid - {0} already exist", resume.getUuid()));
         } else if (size == storage.length) {
             throw new StorageException("Stack Over flow", resume.getUuid());
