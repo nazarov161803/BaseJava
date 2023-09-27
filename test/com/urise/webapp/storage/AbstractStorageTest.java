@@ -6,6 +6,9 @@ import com.urise.webapp.model.Resume;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -20,34 +23,41 @@ public abstract class AbstractStorageTest {
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
+    private static final String UUID_4 = "uuid4";
+
+    private static final Resume RESUME_1 = new Resume(UUID_1, "John Snow");
+    private static final Resume RESUME_2 = new Resume(UUID_2, "Bob Marley");
+    private static final Resume RESUME_3 = new Resume(UUID_3, "Harry Potter");
+    private static final Resume RESUME_4 = new Resume(UUID_4, "Dunno on the Moon");
 
     @BeforeEach
     public void beforeEach() {
         storage.clear();
-        storage.save(new Resume(UUID_1));
-        storage.save(new Resume(UUID_2));
-        storage.save(new Resume(UUID_3));
+        storage.save(RESUME_1);
+        storage.save(RESUME_2);
+        storage.save(RESUME_3);
+        storage.save(RESUME_4);
 
     }
 
     @Test
     public void clear() {
-        assertEquals(3, storage.getSize());
+        assertEquals(4, storage.getSize());
         storage.clear();
         assertEquals(0, storage.getSize());
     }
 
     @Test
     public void save() {
-        Resume newResume4 = new Resume("uuid4");
-        storage.save(newResume4);
-        assertEquals(4, storage.getSize());
-        assertEquals(newResume4, storage.get("uuid4"));
+        Resume newResume = new Resume("uuid5", "Dominic Toretto");
+        storage.save(newResume);
+        assertEquals(5, storage.getSize());
+        assertEquals(newResume, storage.get("uuid5"));
     }
 
     @Test
     public void update() {
-        Resume newResume = new Resume(UUID_1);
+        Resume newResume = new Resume(UUID_1, "Buzz Lighter");
         storage.update(newResume);
         assertEquals(newResume, storage.get(UUID_1));
     }
@@ -61,29 +71,26 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void get() {
-        Resume newResume = new Resume(UUID_2);
-        assertEquals(newResume, storage.get(UUID_2));
+        assertEquals(RESUME_2, storage.get(RESUME_2.getUuid()));
     }
 
     @Test
     public void delete() {
         storage.delete(UUID_3);
-        assertEquals(2, storage.getSize());
+        assertEquals(3, storage.getSize());
     }
 
     @Test
-    public void getAll() {
-        Resume[] array = storage.getAll();
-        assertEquals(3, array.length);
-        assertEquals(new Resume("uuid1"), array[0]);
-        assertEquals(new Resume("uuid2"), array[1]);
-        assertEquals(new Resume("uuid3"), array[2]);
-
+    public void getAllSorted() {
+        List<Resume> allSorted = storage.getAllSorted();
+        assertEquals(4, allSorted.size());
+        System.out.println();
+        assertEquals(allSorted, Arrays.asList(RESUME_2, RESUME_4, RESUME_3, RESUME_1));
     }
 
     @Test
     public void size() {
-        assertEquals(3, storage.getSize());
+        assertEquals(4, storage.getSize());
     }
 
     @Test()
@@ -100,7 +107,7 @@ public abstract class AbstractStorageTest {
     @Test()
     public void existStorageException() {
         assertThrows(ExistStorageException.class, () -> {
-            storage.save(new Resume(UUID_2));
+            storage.save(new Resume(UUID_2, "Bob Marley"));
         });
     }
 }
