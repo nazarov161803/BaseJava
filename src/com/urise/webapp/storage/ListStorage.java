@@ -5,7 +5,7 @@ import com.urise.webapp.model.Resume;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListStorage extends AbstractStorage {
+public class ListStorage extends AbstractStorage<Integer> {
 
     private final List<Resume> storage = new ArrayList<>();
 
@@ -15,23 +15,23 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public void doSave(Resume resume, Object index) {
+    public void doSave(Resume resume, Integer index) {
         storage.add(resume);
     }
 
     @Override
-    public void doUpdate(Resume resume, Object index) {
-        storage.set((Integer) index, resume);
+    public void doUpdate(Resume resume, Integer index) {
+        storage.set(index, resume);
     }
 
     @Override
-    public Resume doGet(Object index) {
-        return storage.get((int) index);
+    public Resume doGet(Integer index) {
+        return storage.get(index);
     }
 
     @Override
-    public void doDelete(Object index) {
-        storage.remove((int) index);
+    public void doDelete(Integer index) {
+        storage.remove(index.intValue());
     }
 
     @Override
@@ -45,7 +45,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object getSearchKey(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         for (int i = 0; i < storage.size(); i++) {
             if (storage.get(i).getUuid().equals(uuid)) {
                 return i;
@@ -55,11 +55,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object index) {
-        if (index.getClass().equals(Integer.class)) {
-            return (int) index >= 0;
-        } else {
-            throw new IllegalArgumentException("Index not Integer");
-        }
+    protected boolean isExist(Integer index) {
+        return index >= 0;
     }
 }

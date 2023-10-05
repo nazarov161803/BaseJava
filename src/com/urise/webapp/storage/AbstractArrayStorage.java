@@ -3,12 +3,10 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
     protected static final int STORAGE_LIMIT = 10000;
     protected final Resume[] storage = new Resume[STORAGE_LIMIT];
@@ -21,29 +19,29 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doSave(Resume resume, Object index) {
+    protected void doSave(Resume resume, Integer index) {
         if (size == storage.length) {
             throw new StorageException("Stack Over flow", resume.getUuid());
         } else {
-            insertElement(resume, (int) index);
+            insertElement(resume, index);
             size++;
         }
     }
 
     @Override
-    protected void doUpdate(Resume resume, Object index) {
-        storage[(int) index] = resume;
+    protected void doUpdate(Resume resume, Integer index) {
+        storage[index] = resume;
 
     }
 
     @Override
-    public Resume doGet(Object searchKey) {
-        return storage[(int) searchKey];
+    public Resume doGet(Integer searchKey) {
+        return storage[searchKey];
     }
 
     @Override
-    public void doDelete(Object index) {
-        fillDeletedElement((Integer) index);
+    public void doDelete(Integer index) {
+        fillDeletedElement(index);
         storage[size - 1] = null;
         size--;
     }
@@ -63,8 +61,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object index) {
-        return (Integer) index >= 0;
+    protected boolean isExist(Integer index) {
+        return index >= 0;
     }
 
     protected abstract void fillDeletedElement(int index);
