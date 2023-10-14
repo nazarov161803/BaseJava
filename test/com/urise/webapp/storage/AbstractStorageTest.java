@@ -25,10 +25,10 @@ public abstract class AbstractStorageTest {
     private static final String UUID_3 = "uuid3";
     private static final String UUID_4 = "uuid4";
 
-    private static final Resume RESUME_1 = new Resume(UUID_1, "John Snow");
-    private static final Resume RESUME_2 = new Resume(UUID_2, "Bob Marley");
-    private static final Resume RESUME_3 = new Resume(UUID_3, "Harry Potter");
-    private static final Resume RESUME_4 = new Resume(UUID_4, "Dunno on the Moon");
+    private static final Resume RESUME_1 = ResumeTestData.RESUME_1;
+    private static final Resume RESUME_2 = ResumeTestData.RESUME_2;
+    private static final Resume RESUME_3 = ResumeTestData.RESUME_3;
+    private static final Resume RESUME_4 = ResumeTestData.RESUME_4;
 
     @BeforeEach
     public void beforeEach() {
