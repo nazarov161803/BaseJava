@@ -1,9 +1,16 @@
 package com.urise.webapp.model;
 
-public class TextSection extends Section {
-    private static final long serialVersionUID = 1L;
-    private final String content;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
+@XmlAccessorType(XmlAccessType.FIELD)  //это надо для сериализатора jaxb тк он работает с сеттрами. в объектам шже нет сетера, он не сможет преобразовать в xml
+public class TextSection extends Section {
+
+    public TextSection() {
+    }
+
+    private static final long serialVersionUID = 1L;
+    private String content;
 
     @Override
     public boolean equals(Object o) {
@@ -18,6 +25,10 @@ public class TextSection extends Section {
     @Override
     public int hashCode() {
         return content.hashCode();
+    }
+
+    public String getContent() {
+        return content;
     }
 
     public TextSection(String content) {

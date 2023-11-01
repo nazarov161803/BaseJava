@@ -74,7 +74,11 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void get() {
-        assertEquals(RESUME_2, storage.get(RESUME_2.getUuid()));
+        assertGet(RESUME_1);
+        assertGet(RESUME_2);
+        assertGet(RESUME_3);
+        assertGet(RESUME_4);
+
     }
 
     @Test
@@ -112,5 +116,9 @@ public abstract class AbstractStorageTest {
         assertThrows(ExistStorageException.class, () -> {
             storage.save(new Resume(UUID_2, "Bob Marley"));
         });
+    }
+
+    private void assertGet(Resume resume) {
+        assertEquals(resume, storage.get(resume.getUuid()));
     }
 }

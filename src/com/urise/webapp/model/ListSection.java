@@ -1,12 +1,19 @@
 package com.urise.webapp.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)  //это надо для сериализатора jaxb тк он работает с сеттрами. в объектам шже нет сетера, он не сможет преобразовать в xml
 public class ListSection extends Section {
+
+    public ListSection() {
+    }
+
     private static final long serialVersionUID = 1L;
-    private final List<String> items;
+    private List<String> items;
 
     public ListSection(String... items) {
         this(Arrays.asList(items)); //varargs для удобства
